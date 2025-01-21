@@ -1,14 +1,7 @@
-import {View, Text, TouchableOpacity, Image, TouchableHighlight} from 'react-native';
-import {useRouter, } from 'expo-router';
+import {View, TouchableOpacity, Image} from 'react-native';
 import {images} from '../../../constants'
 
-const TheaterButton = ({theaterName}) =>{
-    const router = useRouter();
-
-    const handleTheaterPress = (theaterName) =>{
-        console.log(`Yay from ${theaterName}`)
-    }
-
+const TheaterButton = ({theaterName, handleNavigate}) =>{
     return (
         <View>
             <TouchableOpacity
@@ -17,7 +10,7 @@ const TheaterButton = ({theaterName}) =>{
                 margin:20,
                 justifyContent: "center",
                 alignItems: "center"}}
-                onPress={()=> handleTheaterPress(theaterName)}>
+                onPress={handleNavigate}>
             {theaterName=='A' ? (
                 <Image
                 source={images.SoarinA}

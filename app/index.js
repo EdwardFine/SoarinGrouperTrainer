@@ -8,8 +8,9 @@ import { TheaterButton } from '../components';
 const Home = () =>{
     const router = useRouter();
 
-    
-
+    const navigate = () =>{
+        router.push(`/theater-sim/A`)
+    }
 
     return (
         <SafeAreaView style={{display:"flex", backgroundColor: "#ADD8E6", justifyContent:'center', alignItems: 'center',
@@ -25,9 +26,9 @@ const Home = () =>{
         <View style={{display:"flex", flexDirection:"row", flexWrap:"wrap", gap:5,
             alignContent:"center", justifyContent:"center"
         }}>
-            <TheaterButton theaterName="A"/>
-            <TheaterButton theaterName="B"/>
-            <TheaterButton theaterName="C"/>
+            <TheaterButton theaterName="A" handleNavigate={()=> navigate()}/>
+            <TheaterButton theaterName="B" handleNavigate={()=> router.push(`/theater-sim/B`)}/>
+            <TheaterButton theaterName="C" handleNavigate={()=> router.push(`/theater-sim/C`)}/>
         </View>
         </SafeAreaView>
     )
