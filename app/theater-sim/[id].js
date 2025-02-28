@@ -20,7 +20,7 @@ const calculatePartySize = () =>{
   }else if(factor <= 86){
     return 1;
   }else{
-    return Math.floor((Math.random() * 8)) + 6
+    return Math.floor((Math.random() * 8)) + 6;
   }
 }
 
@@ -52,12 +52,12 @@ const TheaterSim = () => {
 
   // Check to see if row has the right amount of seats before grouping the guests there.
   // Also checks to see if all of the rows have been grouped, if so an alert will prompt the user to reset or go home.
-  const handleGroup = (partySize, rowID, isSplit=false) =>{
+  const handleGroup = (partySize, rowID) =>{
     const temp = [...filledSeats];
     if((seatCount[rowID] - temp[rowID])-partySize >=0){
       temp[rowID] += partySize;
       setFilledSeats(temp);
-      if(!isSplit){setPartySize(calculatePartySize());}
+      setPartySize(calculatePartySize());
       setErrorMessage("");
     }else{
       setErrorMessage("Not enough seats!");
@@ -87,21 +87,29 @@ const TheaterSim = () => {
     setSplitErrorMessage("");
   }
 
-  const handleSplit = () => {
+  const handleSplit = async() => {
     if((row1split + row2split + row3split + passSplit) == partySize){
       const splits = [row1split, row2split, row3split];
-      console.log(splits)
+      const temp = [...filledSeats];
       for(let i=0; i<splits.length; i++){
-        handleGroup(splits[i],i,true);
+        if((seatCount[i] - temp[i])-splits[i] >=0){
+          temp[i] += splits[i];
+        }else{
+          setSplitErrorMessage("Not enough seats!");
+          return;
+        }
       }
+      console.log(temp);
+      setFilledSeats(temp);
       clearSplits();
       toggleOverlay();
       setPartySize(calculatePartySize());
+      setErrorMessage("");
     }else{
       if(isNaN(row1split) || isNaN(row2split) || isNaN(row3split) || isNaN(passSplit)){
         setSplitErrorMessage("Invalid number");
       }else{
-        setSplitErrorMessage(`Split doesn't sum to ${partySize}`)
+        setSplitErrorMessage(`Split doesn't sum to ${partySize}`);
       }
     }
   }
