@@ -1,16 +1,12 @@
-import {useState} from 'react';
-import {View, Text, ScrollView, SafeAreaView } from 'react-native';
+import {View, Text, SafeAreaView } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { TheaterButton } from '../components';
 
 
+// Home page for the app. Show a,b, and c gates
 
 const Home = () =>{
     const router = useRouter();
-
-    const navigate = () =>{
-        router.push(`/theater-sim/A`)
-    }
 
     return (
         <SafeAreaView style={{display:"flex", backgroundColor: "#ADD8E6", justifyContent:'center', alignItems: 'center',
@@ -26,7 +22,7 @@ const Home = () =>{
         <View style={{display:"flex", flexDirection:"row", flexWrap:"wrap", gap:5,
             alignContent:"center", justifyContent:"center"
         }}>
-            <TheaterButton theaterName="A" handleNavigate={()=> navigate()}/>
+            <TheaterButton theaterName="A" handleNavigate={()=> router.push(`/theater-sim/A`)}/>
             <TheaterButton theaterName="B" handleNavigate={()=> router.push(`/theater-sim/B`)}/>
             <TheaterButton theaterName="C" handleNavigate={()=> router.push(`/theater-sim/C`)}/>
         </View>
