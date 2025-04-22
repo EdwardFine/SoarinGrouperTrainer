@@ -2,8 +2,8 @@ import {useState, React} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity, Alert, TouchableHighlight, TextInput } from 'react-native';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 import {Row} from '../../components';
+import SplitSection from '../../components/simulator/SplitSection';
 import {Overlay} from '@rneui/themed';
-
 
 
 // Calculate the party size using data from 1500+ party sizes for more accurate simulation
@@ -99,7 +99,6 @@ const TheaterSim = () => {
           return;
         }
       }
-      console.log(temp);
       setFilledSeats(temp);
       clearSplits();
       toggleOverlay();
@@ -111,6 +110,30 @@ const TheaterSim = () => {
       }else{
         setSplitErrorMessage(`Split doesn't sum to ${partySize}`);
       }
+    }
+  }
+
+  const handleSplitIncrease = (splitRow) =>{
+    if(splitRow == 1){
+      setRow1Split(row1split+1);
+    }else if(splitRow == 2){
+      setRow2Split(row2split + 1);
+    }else if(splitRow == 3){
+      setRow3Split(row3split + 1);
+    }else{
+      setPassSplit(passSplit + 1);
+    }
+  }
+
+  const handleSplitDecrease = (splitRow) =>{
+    if(splitRow == 1 && row1split != 0){
+      setRow1Split(row1split -1);
+    }else if(splitRow == 2 && row2split != 0){
+      setRow2Split(row2split - 1);
+    }else if(splitRow == 3 && row3split != 0){
+      setRow3Split(row3split - 1);
+    }else if(passSplit != 0){
+      setPassSplit(passSplit - 1);
     }
   }
 
@@ -172,24 +195,12 @@ const TheaterSim = () => {
 
         <View style={{display:"flex", flexDirection:"row", justifyContent:"space-around", width:"100%", marginBottom:"10"}}>
 
-          <View style={{gap:"5"}}>
-            <Text style={{color:"white"}}>Row 1</Text>
-            <TextInput inputMode='numeric' defaultValue='0' value={row1split} onChangeText={(text)=>setRow1Split(parseInt(text))} maxLength={2} style={{backgroundColor:"white", borderRadius:15, borderWidth:1}}/>
-          </View>
-
-          <View style={{gap:"5"}}>
-            <Text style={{color:"white"}}>Row 2</Text>
-            <TextInput inputMode='numeric' defaultValue='0' value={row2split} onChangeText={(text)=>setRow2Split(parseInt(text))} maxLength={2} style={{backgroundColor:"white", borderRadius:15, borderWidth:1}}/>
-          </View>
-
-          <View style={{gap:"5"}}>
-            <Text style={{color:"white"}}>Row 3</Text>
-            <TextInput inputMode='numeric' defaultValue='0' value={row3split} onChangeText={(text)=>setRow3Split(parseInt(text))} maxLength={2} style={{backgroundColor:"white", borderRadius:15, borderWidth:1}}/>
-          </View>
+          <SplitSection split={row1split} rowNumber={"Row 1"} handleSplitIncrease={() => {handleSplitIncrease(1)}} handleSplitDecrease={() => {handleSplitDecrease(1)}}/>
+          <SplitSection split={row2split} rowNumber={"Row 2"} handleSplitIncrease={() => {handleSplitIncrease(2)}} handleSplitDecrease={() => {handleSplitDecrease(2)}}/>
+          <SplitSection split={row3split} rowNumber={"Row 3"} handleSplitIncrease={() => {handleSplitIncrease(3)}} handleSplitDecrease={() => {handleSplitDecrease(3)}}/>
 
           {params.id != "C" && <View style={{gap:"5"}}>
-            <Text style={{color:"white"}}>Pass </Text>
-            <TextInput inputMode='numeric' defaultValue='0' value={passSplit} onChangeText={(text)=>setPassSplit(parseInt(text))} maxLength={2} style={{backgroundColor:"white", borderRadius:15, borderWidth:1}}w/>
+          <SplitSection split={passSplit} rowNumber={"Pass"} handleSplitIncrease={() => handleSplitIncrease(0)} handleSplitDecrease={() => handleSplitDecrease(0)}/>
           </View>}
         </View>
 
